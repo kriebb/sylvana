@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="PAS.DAL.SqlClient.SqlProjectProvider" Collapsed="true">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>App_Code\DAL\SqlClient\SqlProjectProvider.cs</FileName>
+      <HashCode>AAAAgAAAAAAAAAAAAAgAAAAAAAYAAAAAZAAAAAAAgAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PAS.DAL.DataAccess" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>App_Code\DAL\DataAccess.cs</FileName>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAEAAAAAAAAAJACAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PAS.DAL.DocentProvider" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>App_Code\DAL\DocentProvider.cs</FileName>
+      <HashCode>hAAEAAACAAAAAAAAAhgBAACQUiAkAAhAYAAAAAgAAEA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Instance" />
+    </ShowAsAssociation>
+    <AssociationLine Name="Instance" Type="PAS.DAL.DocentProvider" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.5" Y="2.13" />
+        <Point X="2.5" Y="2.38" />
+        <Point X="2.875" Y="2.38" />
+        <Point X="2.875" Y="2.13" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.227" Y="0.11" />
+      </MemberNameLabel>
+    </AssociationLine>
+  </Class>
+  <Class Name="PAS.DAL.ProjectProvider" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>App_Code\DAL\ProjectProvider.cs</FileName>
+      <HashCode>AAIEgEAAAEAAAAAAAAgAAJAAAAYAAAAAZEAAAAAAgAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Instance" />
+    </ShowAsAssociation>
+    <AssociationLine Name="Instance" Type="PAS.DAL.ProjectProvider" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="0.75" Y="2.13" />
+        <Point X="0.75" Y="2.38" />
+        <Point X="1.125" Y="2.38" />
+        <Point X="1.125" Y="2.13" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.237" Y="0.11" />
+      </MemberNameLabel>
+    </AssociationLine>
+  </Class>
+  <Class Name="PAS.DAL.StudentProvider" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>App_Code\DAL\StudentProvider.cs</FileName>
+      <HashCode>AAAMAghAABAFCCAEAABBABCAAAgRAIACYwJAAGACIAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Instance" />
+    </ShowAsAssociation>
+    <AssociationLine Name="Instance" Type="PAS.DAL.StudentProvider" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.188" Y="2.13" />
+        <Point X="4.188" Y="2.38" />
+        <Point X="4.562" Y="2.38" />
+        <Point X="4.562" Y="2.13" />
+      </Path>
+    </AssociationLine>
+  </Class>
+  <Class Name="PAS.DAL.SqlClient.SqlDocentProvider" Collapsed="true">
+    <Position X="2.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>App_Code\DAL\SqlClient\SqlDocentProvider.cs</FileName>
+      <HashCode>AAAAAAACAAAAAAAAAAgBAACQQiAEAAhAYAAAAAgAAEA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PAS.DAL.SqlClient.SqlStudentProvider" Collapsed="true">
+    <Position X="4" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>App_Code\DAL\SqlClient\SqlStudentProvider.cs</FileName>
+      <HashCode>AAAIAghAABAFCCAEAAABAACAAAAAAIAAIwJAAGAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+</ClassDiagram>

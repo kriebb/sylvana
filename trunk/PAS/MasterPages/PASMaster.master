@@ -1,0 +1,36 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeFile="PASMaster.master.cs" Inherits="PASMaster" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title>Project Administration System</title>
+    <link href="~/PAS.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div id="mainContainer">
+    <div id="header">
+        <asp:Image ID="imgLogo" runat="server" AlternateText="Logo PAS" ImageUrl="~/Images/hogent.JPG" /></div>
+        
+    <div id="navBar">
+        <asp:Menu ID="MainMenu" runat="server">
+            <StaticMenuItemStyle CssClass="staticMenuItem" />
+            <StaticSelectedStyle CssClass="selectedMenuItem" />
+            <StaticHoverStyle CssClass="hoverMenuItem" />
+        </asp:Menu>
+        <br />
+        <asp:Image ID="imgBrouwer" runat="server" ImageUrl="~/Images/navigatie.jpg" Height="176px" Width="116px" />
+    </div>
+    <div id="content">
+    <asp:Label id="lblTitle" skinid="header" runat="server" /><br />
+    <br />
+        <asp:contentplaceholder id="ContentPlaceHolder1" runat="server">
+        </asp:contentplaceholder>
+    </div>
+    <div id="bottomContainer">&nbsp;</div>
+    </div>
+    <div id="footer">Copyright Hogeschool Gent 2006 :: Frederik Bracke :: Kristof Riebbels :: Joris Poppe</div>
+    </form>
+</body>
+</html>

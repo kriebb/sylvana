@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<TgConfig Version="3" SubLevelDisabled="False">
+  <Option Name="General.ModelSupportRootFolder" Type="System.String" Value="ModelSupport" Category="General" IsBrowsable="False" />
+</TgConfig>
