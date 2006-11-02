@@ -1,0 +1,111 @@
+﻿/***********************************************/
+/* Layout anchors in GridviewControl           */
+/***********************************************/
+
+.GVrowStyle
+{
+	background-color: #F7F6F3;
+	color: #333333;
+}
+
+.GVheaderStyle
+{
+	background-color: #5D7B9D;
+	color: White;
+	font-weight: bold;
+}
+
+.GVfooterStyle
+{
+	background-color: #5D7B9D;
+	color: White;
+	font-weight: bold;
+}
+
+.GValterRowStyle
+{
+	background-color: White;
+	color: #284775;
+}
+
+.GVeditRowStyle
+{
+	background-color: #999999;
+}
+
+.GVselectedRowStyle
+{
+	background-color: #E2DED6;
+	color: #333333;
+	font-weight: bold;
+}
+
+.GVpagerStyle
+{
+	background-color: #284775;
+	color: White;
+	text-align: center;
+}
+
+/**************************************************/
+/* Layout anchors in DetailsviewControl           */
+/**************************************************/
+
+.DVrowStyle
+{
+	background-color: #F7F6F3;
+	color: #333333;
+}
+
+.DVheaderStyle
+{
+	background-color: #4A3C8C;
+	color: #F7F7F7;
+	font-weight: bold;
+}
+
+.DVfooterStyle
+{
+	background-color: #4A3C8C;
+	color: #B5C7DE;
+}
+
+.DValterRowStyle
+{
+	background-color: #F7F7F7;
+}
+
+.DVeditRowStyle
+{
+	background-color: #E7E7FF;
+	color: #4A3C8C;
+}
+
+.DVpagerStyle
+{
+	background-color: #E7E7FF;
+	color: #4A3C8C;
+	text-align: right;
+}
+
+/*********************************************/
+/* Layout anchors in otherControls           */
+/*********************************************/
+
+.button
+{
+    font-family: Tahoma,Arial,sans-serif;
+    font-size:11px;
+    border:solid 1px #1f1f1f;
+    color:#eee;
+    background-color:#3063A5;
+    font-weight:bold;
+}
+.message
+{
+	font-variant: small-caps;
+	font-weight: bold;
+	color: green;
+	font-family: Verdana;
+	text-align: center;
+}
