@@ -4,8 +4,10 @@
     TagPrefix="uc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     <uc1:ProjectSelector ID="usProjecten" runat="server" OnProjectChanged="ProjectChanged"/>
-    &nbsp;&nbsp;<asp:ObjectDataSource ID="odsOpgaven" runat="server" SelectMethod="GetOpgavenByProjectId"
-        TypeName="PAS.BLL.ProjectPackage.ProjectBeheerder" DataObjectTypeName="PAS.BLL.ProjectPackage.ProjectOpgave" DeleteMethod="DeleteProjectOpgave" InsertMethod="MakeProjectOpgave" UpdateMethod="UpdateProjectOpgave" OnDeleted="odsOpgaven_Deleted" OnDeleting="odsOpgaven_Deleting">
+    <br />
+    <asp:Label ID="lblInschrijving" runat="server" SkinID="warning"></asp:Label>
+    &nbsp; &nbsp;&nbsp;<asp:ObjectDataSource ID="odsOpgaven" runat="server" SelectMethod="GetOpgavenByProjectId"
+        TypeName="PAS.BLL.ProjectPackage.ProjectBeheerder" DataObjectTypeName="PAS.BLL.ProjectPackage.ProjectOpgave" DeleteMethod="DeleteProjectOpgave" InsertMethod="MakeProjectOpgave" UpdateMethod="UpdateProjectOpgave" OnDeleted="odsOpgaven_Deleted">
         <SelectParameters>
             <asp:ControlParameter ControlID="usProjecten" DefaultValue="-1" Name="projectid"
                 PropertyName="SelectedProjectid" Type="Int32" />

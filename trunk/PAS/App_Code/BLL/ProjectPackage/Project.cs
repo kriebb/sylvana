@@ -45,6 +45,18 @@ namespace PAS.BLL.ProjectPackage
             set { _inschrijvingTot = value; }
         }
 
+        public bool inschrijvingBegonnen()
+        {
+            if (InschrijvingVan == DateTime.MinValue)
+            {
+                return false;
+            }
+            else
+            {
+                return DateTime.Today >= InschrijvingVan;
+            }
+        }
+
         public Project(int projectid, string projecttitel, int studiejaar, DateTime inschrijvingvan, DateTime inschrijvingtot)
         {
             ProjectId = projectid;

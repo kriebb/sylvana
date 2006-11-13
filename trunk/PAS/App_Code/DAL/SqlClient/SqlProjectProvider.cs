@@ -142,7 +142,14 @@ namespace PAS.DAL.SqlClient
                     oCmd.Parameters.Add("@opgaveID", SqlDbType.Int).Value = projectopgaveid;
                 }
                 oConn.Open();
-                return GetProjectOpgaveFromReader(ExecuteReader(oCmd));
+                try
+                {
+                    return GetProjectOpgaveFromReader(ExecuteReader(oCmd));
+                }
+                catch(Exception ex)
+                {
+                    return null;   
+                }
             }
         }
 
