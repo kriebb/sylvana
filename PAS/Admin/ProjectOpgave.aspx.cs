@@ -15,26 +15,28 @@ using PAS.BLL;
     public partial class Site_ProjectOpgave : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
-        {
-            
+        {            
             if (!Page.IsPostBack)
             {
                 btnInsert.Visible = false;
             }
         }
-        //private int projectID=0;
-        //private int opgaveID = 0;
         protected void grvOpgaven_RowDeleted(object sender, GridViewDeletedEventArgs e)
         {
-            //projectID = grvOpgaven.DataKeys[1].Value;
-            grvOpgaven.SelectedIndex = -1;
-            grvOpgaven.DataBind();
-            dvOpgaven.Visible = false;
-            btnInsert.Visible = true;
+            try
+            {
+                grvOpgaven.SelectedIndex = -1;
+                grvOpgaven.DataBind();
+                dvOpgaven.Visible = false;
+                btnInsert.Visible = true;
+            }
+            catch (Exception ex)
+            {
+                lblMessage.Text = e.Exception.Message + "<br>"+ex.Message;
+            }
         }
         protected void grvOpgaven_RowCreated(object sender, GridViewRowEventArgs e)
-        {
-           
+        {           
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 ImageButton btn = (ImageButton)e.Row.Cells[e.Row.Cells.Count-1].Controls[0];
@@ -53,10 +55,17 @@ using PAS.BLL;
         }      
         protected void dvOpgaven_ItemUpdated(object sender, DetailsViewUpdatedEventArgs e)
         {
-            grvOpgaven.SelectedIndex = -1;
-            grvOpgaven.DataBind();
-            dvOpgaven.Visible = false;
-            btnInsert.Visible = true;
+            try
+            {
+                grvOpgaven.SelectedIndex = -1;
+                grvOpgaven.DataBind();
+                dvOpgaven.Visible = false;
+                btnInsert.Visible = true;
+            }
+            catch (Exception ex)
+            {
+                lblMessage.Text = e.Exception.Message + "<br>" + ex.Message;
+            }
            
         }
         protected void dvOpgaven_ModeChanged(object sender, EventArgs e)
@@ -91,15 +100,24 @@ using PAS.BLL;
         }
         protected void dvOpgaven_ItemInserted(object sender, DetailsViewInsertedEventArgs e)
         {
-            grvOpgaven.SelectedIndex = -1;
-            dvOpgaven.HeaderText = "<center>...::Maak een nieuwe opgave aan::...</center>";            
-            dvOpgaven.Visible = false;
-            dvOpgaven.ChangeMode(DetailsViewMode.Edit);
-            grvOpgaven.DataBind();
-            btnInsert.Visible = true;
+            try
+            {
+                grvOpgaven.SelectedIndex = -1;
+                dvOpgaven.HeaderText = "<center>...::Maak een nieuwe opgave aan::...</center>";
+                dvOpgaven.Visible = false;
+                dvOpgaven.ChangeMode(DetailsViewMode.Edit);
+                grvOpgaven.DataBind();
+                btnInsert.Visible = true;
+            }
+            catch (Exception ex)
+            {
+                lblMessage.Text = e.Exception.Message + "<br>" + ex.Message;
+            }
         }
         protected void ProjectChanged(object sender, EventArgs e)
-        {           
+        {
+            lblInschrijving.Visible = false;
+            lblInschrijving.Text = "";
             if (usProjecten.SelectedProjectid >= 0)
             {
                 btnInsert.Visible = true;
@@ -108,12 +126,18 @@ using PAS.BLL;
                 grvOpgaven.DataBind();
                 grvOpgaven.Visible = true;
                 dvOpgaven.Visible = false;
+                if (DomeinController.Instance.ProjectBeheerder.GetProjectenDictionary()[usProjecten.SelectedProjectid].inschrijvingBegonnen())
+                {
+                    lblInschrijving.Text="Opgelet: De inschrijvingen van dit project zijn begonnen.";
+                    lblInschrijving.Visible = true;
+                }
             }
             else
             {
                 grvOpgaven.DataSourceID = null;
                 dvOpgaven.Visible = false;
                 btnInsert.Visible = false;
+
             }
             lblMessage.Text = "";
             btnBevestigHardDelete.Visible = false;
@@ -132,60 +156,85 @@ using PAS.BLL;
 
         protected void odsOpgaven_Deleted(object sender, ObjectDataSourceStatusEventArgs e)
         {
-            if ((bool)e.ReturnValue)
+            try
             {
-                lblMessage.Text = "Verwijderen gelukt!";
+                if ((bool)e.ReturnValue)
+                {
+                    lblMessage.Text = "Verwijderen gelukt!";
+                }
+                else
+                {
+
+                    lblMessage.Text = "Nog niets verwijderd!<br>U kunt een CascadeDelete proberen.<br>Die knop is nu zichtbaar gemaakt.";
+                    btnBevestigHardDelete.Visible = true;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                
-                lblMessage.Text = "Nog niets verwijderd!<br>U kunt een CascadeDelete proberen.<br>Die knop is nu zichtbaar gemaakt.";
-                btnBevestigHardDelete.Visible = true;
+                lblMessage.Text = e.Exception.Message;
             }
         }
         protected void odsOpgavenCrud_Updated(object sender, ObjectDataSourceStatusEventArgs e)
         {
-            if ((bool)e.ReturnValue)
+            try
             {
-                lblMessage.Text = "Bijwerken gelukt!";
+                if ((bool)e.ReturnValue)
+                {
+                    lblMessage.Text = "Bijwerken gelukt!";
+                }
+                else
+                {
+                    lblMessage.Text = "Bijwerken van record mislukt!";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                lblMessage.Text = "Bijwerken van record mislukt!";
+                lblMessage.Text = e.Exception.Message + "<br>" + ex.Message;
             }
         }
         protected void odsOpgavenCrud_Inserted(object sender, ObjectDataSourceStatusEventArgs e)
         {
-            if ((bool)e.ReturnValue)
+            try
             {
-                lblMessage.Text = "Toevoegen gelukt!";
+                if ((bool)e.ReturnValue)
+                {
+                    lblMessage.Text = "Toevoegen gelukt!";
+                }
+                else
+                {
+                    lblMessage.Text = "Toevoegen van rij mislukt!";
+                }
             }
-            else
-            {   
-                lblMessage.Text = "Toevoegen van rij mislukt!";
+            catch(Exception ex)
+            {
+                lblMessage.Text = e.Exception.Message + "<br>" + ex.Message;
             }
         }
         protected void btnBevestigHardDelete_Click(object sender, EventArgs e)
         {
-            int proj = Int32.Parse(Session["DEL_projectID"].ToString());
-            int opgv = Int32.Parse(Session["DEL_opgaveID"].ToString());             
+            try
+            {
+                int proj = Int32.Parse(Session["DEL_projectID"].ToString());
+                int opgv = Int32.Parse(Session["DEL_opgaveID"].ToString());
 
-            ProjectOpgave po = DomeinController.Instance.ProjectBeheerder.GetOpgaveByProjectID_OpgaveID(
-                        proj,
-                        opgv);
-            if (DomeinController.Instance.ProjectBeheerder.HardDeleteProjectOpgave(po))
-            {
-                lblMessage.Text = "Verwijderen gelukt!";
+                ProjectOpgave po = DomeinController.Instance.ProjectBeheerder.GetOpgaveByProjectID_OpgaveID(
+                            proj,
+                            opgv);
+                if (DomeinController.Instance.ProjectBeheerder.HardDeleteProjectOpgave(po))
+                {
+                    lblMessage.Text = "Verwijderen gelukt!";
+                }
+                else
+                {
+                    lblMessage.Text = "Verwijderen van rij mislukt!";
+                }
+                btnBevestigHardDelete.Visible = false;
+                grvOpgaven.DataBind();
             }
-            else
+            catch (Exception ex)
             {
-                lblMessage.Text = "Verwijderen van rij mislukt!";
+                lblMessage.Text = ex.Message;
             }
-            btnBevestigHardDelete.Visible = false;
-            grvOpgaven.DataBind();
-        }
-        protected void odsOpgaven_Deleting(object sender, ObjectDataSourceMethodEventArgs e)
-        {
         }
         protected void grvOpgaven_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
