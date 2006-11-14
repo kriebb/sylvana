@@ -6,8 +6,9 @@
     <uc1:ProjectSelector ID="usProjecten" runat="server" OnProjectChanged="ProjectChanged"/>
     <br />
     <asp:Label ID="lblInschrijving" runat="server" SkinID="warning"></asp:Label>
-    &nbsp; &nbsp;&nbsp;<asp:ObjectDataSource ID="odsOpgaven" runat="server" SelectMethod="GetOpgavenByProjectId"
-        TypeName="PAS.BLL.ProjectPackage.ProjectBeheerder" DataObjectTypeName="PAS.BLL.ProjectPackage.ProjectOpgave" DeleteMethod="DeleteProjectOpgave" InsertMethod="MakeProjectOpgave" UpdateMethod="UpdateProjectOpgave" OnDeleted="odsOpgaven_Deleted">
+    &nbsp; &nbsp;&nbsp;
+    <asp:ObjectDataSource ID="odsOpgaven" runat="server" SelectMethod="GetOpgavenByProjectId"
+        TypeName="PAS.BLL.ProjectPackage.ProjectBeheerder" DataObjectTypeName="PAS.BLL.ProjectPackage.ProjectOpgave" DeleteMethod="DeleteProjectOpgave" InsertMethod="MakeProjectOpgave" UpdateMethod="UpdateProjectOpgave">
         <SelectParameters>
             <asp:ControlParameter ControlID="usProjecten" DefaultValue="-1" Name="projectid"
                 PropertyName="SelectedProjectid" Type="Int32" />
@@ -15,7 +16,7 @@
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="odsOpgavenCrud" runat="server" DataObjectTypeName="PAS.BLL.ProjectPackage.ProjectOpgave"
         DeleteMethod="DeleteProjectOpgave" InsertMethod="MakeProjectOpgave" SelectMethod="GetOpgaveByProjectID_OpgaveID"
-        TypeName="PAS.BLL.ProjectPackage.ProjectBeheerder" UpdateMethod="UpdateProjectOpgave" OnInserted="odsOpgavenCrud_Inserted" OnUpdated="odsOpgavenCrud_Updated">
+        TypeName="PAS.BLL.ProjectPackage.ProjectBeheerder" UpdateMethod="UpdateProjectOpgave">
         <SelectParameters>
             <asp:ControlParameter ControlID="usProjecten" DefaultValue="-1" Name="projectid"
                 PropertyName="SelectedProjectid" Type="Int32" />
