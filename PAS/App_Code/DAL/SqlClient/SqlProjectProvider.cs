@@ -107,15 +107,16 @@ namespace PAS.DAL.SqlClient
 
         public override bool DeleteProjectOpgave(int projectopgaveid)
         {
-            using (SqlConnection oConn = new SqlConnection(this.ConnectionString))
-            {
-                SqlCommand oCmd = new SqlCommand("usp_ProjectOpgave_Delete", oConn);
-                oCmd.CommandType = CommandType.StoredProcedure;
-                oCmd.Parameters.Add("@opgaveID", SqlDbType.Int).Value = projectopgaveid;
-                oConn.Open();
-                int ret = ExecuteNonQuery(oCmd);
-                return (ret >= 1);
-            }
+                using (SqlConnection oConn = new SqlConnection(this.ConnectionString))
+                {
+                    SqlCommand oCmd = new SqlCommand("usp_ProjectOpgave_Delete", oConn);
+                    oCmd.CommandType = CommandType.StoredProcedure;
+                    oCmd.Parameters.Add("@opgaveID", SqlDbType.Int).Value = projectopgaveid;
+                    oConn.Open();
+                    int ret = ExecuteNonQuery(oCmd);
+                    return (ret >= 1);
+                }
+            
         }
         public override bool HardDeleteProjectOpgave(int projectopgaveid)
         {
@@ -140,16 +141,10 @@ namespace PAS.DAL.SqlClient
                 if (projectopgaveid > 0)
                 {
                     oCmd.Parameters.Add("@opgaveID", SqlDbType.Int).Value = projectopgaveid;
+                    
                 }
                 oConn.Open();
-                try
-                {
-                    return GetProjectOpgaveFromReader(ExecuteReader(oCmd));
-                }
-                catch(Exception ex)
-                {
-                    return null;   
-                }
+                return GetProjectOpgaveFromReader(ExecuteReader(oCmd));
             }
         }
 
