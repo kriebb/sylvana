@@ -10,6 +10,7 @@ namespace PAS.BLL.DocentPackage
 {
     public class DocentInDocentTeam
     {
+        private DocentTeam dt = null;
         public DocentInDocentTeam(int luikid, string luiknaam, int teamid)
         {
             DocentTeamId = teamid;
