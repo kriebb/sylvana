@@ -49,7 +49,9 @@ public partial class Site_DocentTeam : System.Web.UI.Page
     }
     protected void btnNieuwTeam_Click(object sender, EventArgs e)
     {
-        DomeinController.Instance.DocentBeheerder.MakeDocentTeam(ucOpgaveSelector.SelectedOpgaveId);
+        DocentTeam dt = new DocentTeam();
+        dt.DocentTeamId = ucOpgaveSelector.SelectedOpgaveId;
+        DomeinController.Instance.DocentBeheerder.MakeDocentTeam(dt);
         ddlTeams.DataSourceID = "odsDocentTeams";
         ddlTeams.DataTextField = "docentTeamId";
         ddlTeams.DataValueField = "docentTeamId";

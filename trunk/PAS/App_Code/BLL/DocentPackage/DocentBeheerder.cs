@@ -36,13 +36,9 @@ namespace PAS.BLL.DocentPackage
             }
             return docentteam_opgaveid;
         }
-        public void MakeDocentTeam(int opgaveid)
+        public void MakeDocentTeam(DocentTeam dt)
         {
-            ProjectOpgave po = ProjectProvider.Instance.GetProjectOpgaveByID(opgaveid);
-            DocentTeam dt = new DocentTeam();
-            dt.ProjectOpgaveObj = po;
-
-            DocentProvider.Instance.InsertDocentTeam(opgaveid);
+            DocentProvider.Instance.InsertDocentTeam(dt);
         }
         public void DeleteDocentTeam(int teamid)
         {
@@ -68,9 +64,9 @@ namespace PAS.BLL.DocentPackage
             }
             return docenten;
         }
-        public bool UpdateDocentTeam(int docentteamid, int projectluikid, string docentid)
+        public bool UpdateDocentTeam(DocentInDocentTeam docentinteam)
         {
-            return DocentProvider.Instance.UpdateDocentInDocentTeam(docentteamid, projectluikid, docentid);
+            return DocentProvider.Instance.UpdateDocentInDocentTeam(docentinteam);
         }
         //public void SetDocentInTeam(Docent docent, int luikid, int teamid)
         //{

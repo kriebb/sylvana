@@ -33,13 +33,13 @@ namespace PAS.DAL.SqlClient
 
 
         /* Methodes voor de klasse DocentTeam */
-        public override void InsertDocentTeam(int OpgaveId)
+        public override void InsertDocentTeam(DocentTeam dt)
         {
             using (SqlConnection oConn = new SqlConnection(this.ConnectionString))
             {
                 SqlCommand oCmd = new SqlCommand("usp_Docentteam_Insert", oConn);
                 oCmd.CommandType = CommandType.StoredProcedure;
-                oCmd.Parameters.Add("@opgaveid", SqlDbType.Int).Value = OpgaveId;
+                oCmd.Parameters.Add("@opgaveid", SqlDbType.Int).Value = dt.ProjectOpgave;
                 oConn.Open();
                 ExecuteNonQuery(oCmd);
             }
@@ -52,7 +52,7 @@ namespace PAS.DAL.SqlClient
                 SqlCommand oCmd = new SqlCommand("usp_Docentteam_Update", oConn);
                 oCmd.CommandType = CommandType.StoredProcedure;
                 oCmd.Parameters.Add("@docentteamid", SqlDbType.Int).Value = docentteam.DocentTeamId;
-                oCmd.Parameters.Add("@opgaveid", SqlDbType.Int).Value = docentteam.ProjectOpgaveId;
+                oCmd.Parameters.Add("@opgaveid", SqlDbType.Int).Value = docentteam.ProjectOpgave;
                 oConn.Open();
                 ExecuteNonQuery(oCmd);
                 int ret = ExecuteNonQuery(oCmd);
@@ -109,15 +109,15 @@ namespace PAS.DAL.SqlClient
             throw new System.NotImplementedException();
         }
 
-        public override bool UpdateDocentInDocentTeam(int docentteamid, int projectluikid, string docentid)
+        public override bool UpdateDocentInDocentTeam(DocentInDocentTeam docentinteam)
         {
             using (SqlConnection oConn = new SqlConnection(this.ConnectionString))
             {
                 SqlCommand oCmd = new SqlCommand("usp_DocentInDocentteam_Update", oConn);
                 oCmd.CommandType = CommandType.StoredProcedure;
-                oCmd.Parameters.Add("@docentteamid", SqlDbType.Int).Value = docentteamid;
-                oCmd.Parameters.Add("@projectluikid", SqlDbType.Int).Value = projectluikid;
-                oCmd.Parameters.Add("@docentid", SqlDbType.NVarChar).Value = docentid;
+                oCmd.Parameters.Add("@docentteamid", SqlDbType.Int).Value = docentinteam.DocentTeam.DocentTeamId;
+                oCmd.Parameters.Add("@projectluikid", SqlDbType.Int).Value = docentinteam.ProjectLuik.LuikId;
+                oCmd.Parameters.Add("@docentid", SqlDbType.NVarChar).Value = docentinteam.Docent.DocentId;
                 oConn.Open();
                 ExecuteNonQuery(oCmd);
                 int ret = ExecuteNonQuery(oCmd);
@@ -138,14 +138,15 @@ namespace PAS.DAL.SqlClient
 
         public override List<DocentInDocentTeam> GetLuikenByProjectAndTeam(int projectid, int teamid)
         {
-            using (SqlConnection oConn = new SqlConnection(this.ConnectionString))
-            {
-                SqlCommand oCmd = new SqlCommand("usp_ProjectLuik_SelectAll", oConn);
-                oCmd.CommandType = CommandType.StoredProcedure;
-                oCmd.Parameters.Add("@projectid", SqlDbType.Int).Value = projectid;
-                oConn.Open();
-                return GetLuikenFromReader(ExecuteReader(oCmd), teamid);
-            }
+        //    using (SqlConnection oConn = new SqlConnection(this.ConnectionString))
+        //    {
+        //        SqlCommand oCmd = new SqlCommand("usp_ProjectLuik_SelectAll", oConn);
+        //        oCmd.CommandType = CommandType.StoredProcedure;
+        //        oCmd.Parameters.Add("@projectid", SqlDbType.Int).Value = projectid;
+        //        oConn.Open();
+        //        return GetLuikenFromReader(ExecuteReader(oCmd), teamid);
+        //    }
+            return null;
         }
 
         public override List<DocentInDocentTeam> GetDocentInDocentTeamsByDocent(int docentid)

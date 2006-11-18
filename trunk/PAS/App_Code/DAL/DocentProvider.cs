@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Web.Configuration;
 
 using PAS.BLL.DocentPackage;
+using PAS.BLL.ProjectPackage;
 using System.Data;
 
 namespace PAS.DAL
@@ -57,7 +58,7 @@ namespace PAS.DAL
 
         /* Methodes voor de klasse DocentTeam */
 
-        public abstract void InsertDocentTeam(int opgaveid);
+        public abstract void InsertDocentTeam(DocentTeam docentteam);
 
         public abstract bool UpdateDocentTeam(DocentTeam docentteam);
 
@@ -73,7 +74,9 @@ namespace PAS.DAL
 
         protected virtual DocentTeam GetDocentTeamFromReader(IDataRecord oRecord)
         {
-            return new DocentTeam((int)oRecord["docentteamid"], (int)oRecord["opgaveid"]);
+            ProjectOpgave po = new ProjectOpgave();
+            po.OpgaveId=(int)oRecord["opgaveid"];
+            return new DocentTeam((int)oRecord["docentteamid"],po );
         }
 
         protected virtual List<DocentTeam> GetDocentTeamCollectionFromReader(IDataReader oReader)
@@ -90,7 +93,7 @@ namespace PAS.DAL
 
         public abstract void InsertDocentInDocentTeam(DocentInDocentTeam docentinteam);
 
-        public abstract bool UpdateDocentInDocentTeam(int docentteamid, int projectluikid, string docentid);
+        public abstract bool UpdateDocentInDocentTeam(DocentInDocentTeam docentinteam);
 
         public abstract bool DeleteDocentInDocentTeam(int docentteamid);
 
@@ -127,7 +130,13 @@ namespace PAS.DAL
 
         protected virtual DocentInDocentTeam GetLuikFromReader(IDataRecord oRecord, int teamid)
         {
-            return new DocentInDocentTeam((int)oRecord["luikid"], oRecord["luikTitel"].ToString(), teamid);
+            DocentTeam dt = new DocentTeam();
+            ProjectLuik pl = new ProjectLuik();
+            Docent d = new Docent();
+            dt.DocentTeamId=teamid;
+            pl.LuikId=(int)oRecord["luikid"];
+            d.DocentId=oRecord["docentid"].ToString();
+            return new DocentInDocentTeam(dt,pl,d );
         }
 
     }
