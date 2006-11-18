@@ -15,7 +15,7 @@ namespace PAS.BLL.DocentPackage
         public DocentTeam(int docentteamid, ProjectOpgave projectopgave)
         {
             DocentTeamId = docentteamid;
-            ProjectOpgaveObj = projectopgave;
+            ProjectOpgave = projectopgave;
         }
         public DocentTeam(int docentteamid, int projectid, int projectopgaveid)
         {
@@ -32,11 +32,16 @@ namespace PAS.BLL.DocentPackage
             set { _docentTeamId = value; }
         }
 
-        public ProjectOpgave ProjectOpgaveObj
+        public ProjectOpgave ProjectOpgave
         {
-            get { return _projectopgave; }
-            set { _projectopgave = value; }
+            get
+            {
+                return _projectopgave;
+            }
+            set
+            {
+                _projectopgave = value;
+            }
         }
-	
     }
 }
