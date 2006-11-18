@@ -30,7 +30,7 @@ public partial class Site_DocentTeam : System.Web.UI.Page
         if (ucOpgaveSelector.SelectedOpgaveId > 0)
         {
             pnlTeams.Visible = true;
-            Dictionary<int,DocentTeam>.ValueCollection lijst = DomeinController.Instance.DocentBeheerder.SelectDocentTeam(ucOpgaveSelector.SelectedOpgaveId);
+            List<DocentTeam> lijst = DomeinController.Instance.DocentBeheerder.SelectDocentTeam(ucOpgaveSelector.SelectedOpgaveId);
             if (lijst != null)
             {
                 ddlTeams.DataSourceID = "odsDocentTeams";
@@ -58,6 +58,7 @@ public partial class Site_DocentTeam : System.Web.UI.Page
         ddlTeams.AutoPostBack = true;
         ddlTeams.SelectedIndex = ddlTeams.Items.Count-1;
         pnlTeams.Visible = true;
+        grvProjectLuiken.Visible = true;
     }
     protected void btnVerwijderTeam_Click(object sender, EventArgs e)
     {

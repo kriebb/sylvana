@@ -5,6 +5,7 @@ using System.Web.Services.Protocols;
 using System.Collections.Generic;
 
 using PAS.DAL;
+using PAS.BLL.ProjectPackage;
 
 namespace PAS.BLL.DocentPackage
 {
@@ -16,28 +17,33 @@ namespace PAS.BLL.DocentPackage
         }
         public List<DocentInDocentTeam> SelecteerLuikenByProjectAndTeam(int projectid, int teamid)
         {
-            return DocentProvider.Instance.GetLuikenByProjectAndTeam(projectid, teamid);
+            List<DocentInDocentTeam> docentindocentteam_project_team = (List<DocentInDocentTeam>)HttpContext.Current.Cache["docentindocentteam_project_team=" + projectid + "" + teamid];
+            if (docentindocentteam_project_team == null)
+            {
+                docentindocentteam_project_team = DocentProvider.Instance.GetLuikenByProjectAndTeam(projectid, teamid);
+                HttpContext.Current.Cache["docentindocentteam_project_team=" + projectid + "" + teamid] = docentindocentteam_project_team;
+            }
+            return docentindocentteam_project_team;
         }
 
-        public Dictionary<int, DocentTeam>.ValueCollection SelectDocentTeam(int opgaveid)
+        public List<DocentTeam> SelectDocentTeam(int opgaveid)
         {
-            return DocentProvider.Instance.GetDocentTeamsByProjectOpgave(opgaveid).Values;
+            List<DocentTeam> docentteam_opgaveid = (List<DocentTeam>)HttpContext.Current.Cache["docentteam_opgaveid=" + opgaveid];
+            if (docentteam_opgaveid == null)
+            {
+                docentteam_opgaveid = DocentProvider.Instance.GetDocentTeamsByProjectOpgave(opgaveid);
+                HttpContext.Current.Cache["docentteam_opgaveid=" + opgaveid]=docentteam_opgaveid;
+            }
+            return docentteam_opgaveid;
         }
         public void MakeDocentTeam(int opgaveid)
         {
+            ProjectOpgave po = ProjectProvider.Instance.GetProjectOpgaveByID(opgaveid);
+            DocentTeam dt = new DocentTeam();
+            dt.ProjectOpgaveObj = po;
+
             DocentProvider.Instance.InsertDocentTeam(opgaveid);
         }
-
-        public void SetDocentInTeam(Docent docent, int luikid, int teamid)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void UpdateDocentInTeam(Docent docent, int luikid, int teamid)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public void DeleteDocentTeam(int teamid)
         {
             DocentProvider.Instance.DeleteDocentTeam(teamid);
@@ -49,17 +55,31 @@ namespace PAS.BLL.DocentPackage
         }
         public List<Docent> SelecteerDocenten()
         {
-            List<Docent> lijst =  DocentProvider.Instance.GetDocenten();
-            Docent docent = new Docent();
-            docent.DocentId = "-1";
-            docent.Naam = "Niet ";
-            docent.Voornaam = "geselecteerd";
-            lijst.Insert(0, docent);
-            return lijst;
+            List<Docent> docenten = (List<Docent>)HttpContext.Current.Cache["docenten"];
+            if (docenten == null)
+            {
+                docenten = DocentProvider.Instance.GetDocenten();
+                Docent docent = new Docent();
+                docent.DocentId = "-1";
+                docent.Naam = "Niet ";
+                docent.Voornaam = "geselecteerd";
+                docenten.Insert(0, docent);
+                HttpContext.Current.Cache["docenten"] = docenten;
+            }
+            return docenten;
         }
         public bool UpdateDocentTeam(int docentteamid, int projectluikid, string docentid)
         {
             return DocentProvider.Instance.UpdateDocentInDocentTeam(docentteamid, projectluikid, docentid);
         }
+        //public void SetDocentInTeam(Docent docent, int luikid, int teamid)
+        //{
+        //    throw new System.NotImplementedException();
+        //}
+
+        //public void UpdateDocentInTeam(Docent docent, int luikid, int teamid)
+        //{
+        //    throw new System.NotImplementedException();
+        //}
     }
 }

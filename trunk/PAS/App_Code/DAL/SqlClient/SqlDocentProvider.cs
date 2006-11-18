@@ -79,7 +79,7 @@ namespace PAS.DAL.SqlClient
             throw new System.NotImplementedException();
         }
 
-        public override Dictionary<int,DocentTeam> GetDocentTeamsByProjectOpgave(int projectopgaveid)
+        public override List<DocentTeam> GetDocentTeamsByProjectOpgave(int projectopgaveid)
         {
             using (SqlConnection oConn = new SqlConnection(this.ConnectionString))
             {
@@ -91,7 +91,7 @@ namespace PAS.DAL.SqlClient
             }
         }
 
-        public override Dictionary<int,DocentTeam> GetDocentTeams()
+        public override List<DocentTeam> GetDocentTeams()
         {
             using (SqlConnection oConn = new SqlConnection(this.ConnectionString))
             {

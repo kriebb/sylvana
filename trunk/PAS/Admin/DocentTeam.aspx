@@ -21,7 +21,7 @@
     <br />
     <asp:GridView ID="grvProjectLuiken" runat="server" AutoGenerateColumns="False">
         <Columns>
-            <asp:TemplateField HeaderText="Luik">
+            <asp:TemplateField HeaderText="Luik" SortExpression="LuikNaam">
                 <EditItemTemplate>
                     <asp:Label ID="lblLuik" runat="server" Text='<%# bind("LuikNaam") %>'></asp:Label>
                 </EditItemTemplate>
