@@ -17,7 +17,11 @@ namespace PAS.BLL.DocentPackage
             DocentTeamId = docentteamid;
             ProjectOpgaveObj = projectopgave;
         }
-
+        public DocentTeam(int docentteamid, int projectid, int projectopgaveid)
+        {
+            DocentTeamId = docentteamid;
+            ProjectOpgaveObj = DomeinController.Instance.ProjectBeheerder.GetOpgaveByProjectID_OpgaveID(projectid,projectopgaveid);
+        }
         public DocentTeam()
         {
         }
