@@ -65,9 +65,9 @@ namespace PAS.DAL
 
         public abstract DocentTeam GetDocentTeamByID(int docentteamid);
 
-        public abstract Dictionary<int,DocentTeam> GetDocentTeamsByProjectOpgave(int projectopgaveid);
+        public abstract List<DocentTeam> GetDocentTeamsByProjectOpgave(int projectopgaveid);
 
-        public abstract Dictionary<int,DocentTeam> GetDocentTeams();
+        public abstract List<DocentTeam> GetDocentTeams();
 
         /* Mappers voor de klasse DocentTeam */
 
@@ -76,13 +76,12 @@ namespace PAS.DAL
             return new DocentTeam((int)oRecord["docentteamid"], (int)oRecord["opgaveid"]);
         }
 
-        protected virtual Dictionary<int,DocentTeam> GetDocentTeamCollectionFromReader(IDataReader oReader)
+        protected virtual List<DocentTeam> GetDocentTeamCollectionFromReader(IDataReader oReader)
         {
-            Dictionary<int,DocentTeam> docentteams = new Dictionary<int,DocentTeam>();
+            List<DocentTeam> docentteams = new List<DocentTeam>();
             while (oReader.Read())
             {
-                DocentTeam dt = GetDocentTeamFromReader(oReader);
-                docentteams.Add(dt.DocentTeamId,dt);
+                docentteams.Add(GetDocentTeamFromReader(oReader));
             }
             return docentteams;
         }

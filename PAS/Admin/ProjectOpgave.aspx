@@ -46,7 +46,7 @@
         BorderColor="#E7E7FF" BorderStyle="None" BorderWidth="1px" CellPadding="3" DataKeyNames="OpgaveId,ProjectID,OpgaveTitel,KorteOmschrijving,AantalGroepen,AantalStudentenPerGroep"
         DataSourceID="odsOpgavenCrud" DefaultMode="Edit" GridLines="Horizontal" Height="1px"
         OnItemUpdated="dvOpgaven_ItemUpdated" OnModeChanged="dvOpgaven_ModeChanged"
-        Visible="False" Width="621px" OnItemInserted="dvOpgaven_ItemInserted" OnItemInserting="dvOpgaven_ItemInserting" HorizontalAlign="Center" OnItemUpdating="dvOpgaven_ItemUpdating" EmptyDataText="Geen gedetailleerde gegevens gevonden!">
+        Visible="False" Width="621px" OnItemInserted="dvOpgaven_ItemInserted" OnItemInserting="dvOpgaven_ItemInserting" HorizontalAlign="Center" OnItemUpdating="dvOpgaven_ItemUpdating" EmptyDataText="Geen gedetailleerde gegevens gevonden!" OnPageIndexChanging="dvOpgaven_PageIndexChanging">
         <Fields>
             <asp:BoundField DataField="ProjectID" HeaderText="ProjectID" SortExpression="ProjectID"
                 Visible="False" />
