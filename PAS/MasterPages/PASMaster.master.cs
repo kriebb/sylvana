@@ -8,9 +8,70 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
+using System.Data.SqlClient;
+using System.Net.Mail;
 
 public partial class PASMaster : System.Web.UI.MasterPage
 {
+    public static string onderzoekException(Exception inner)
+    {
+        String tekst = "";
+        if (inner is SqlException)
+        {
+            tekst += inner.Message;
+        }
+        else
+        {            
+                if (inner is NoNullAllowedException)
+                    tekst += "Er zijn velden niet goed ingevuld. <br>Gelieve alles goed na te kijken.<br>" + inner.Message;
+                else
+                {
+                    if (inner is ArgumentException)
+                    {
+                        string paramName = ((ArgumentException)inner).ParamName;
+                        tekst += string.Concat("De ", paramName, " parameterwaarde is slecht.<br>" + inner.Message);
+                    }
+                    else
+                    {
+                        if (inner is ApplicationException)
+                        {
+                            tekst += "Fout in de applicatie:<br>" + inner.Message;
+                        }
+                        else
+                        {
+                            if (inner is System.Data.Common.DbException)
+                            {
+                                tekst += "We ondervinden problemen met onze database. <br>Probeer later opnieuw.<br>" + inner.Message;
+                            }
+                            String bericht = "";
+                            do
+                            {
+                                bericht = "<br>" + inner.Message + "<br>";
+                            }
+                            while (inner.InnerException != null);
+                            tekst += bericht;
+                            
+                         
+                        string strBody = "<html><body><b>Begin log op"+DateTime.Today+"</b><br>" +tekst+
+                           " <font color=\"red\">-einde log-</font></body></html>";
+
+                        MailMessage msgMail = new MailMessage("info@hogent.be", "kristof@riebbels.be", "ErrorLog", strBody);
+
+                        msgMail.IsBodyHtml = true;
+                            SmtpClient newClient = new SmtpClient();
+                        newClient.Host = "relay.skynet.be";
+                        
+                        newClient.Send(msgMail);
+                        tekst += "<br>Deze fout is gemaild naar de administrator.</br>";
+
+
+                    }
+                }
+            }
+        }
+        return tekst;
+    }
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!Page.IsPostBack)
