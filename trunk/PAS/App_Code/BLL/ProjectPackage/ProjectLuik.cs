@@ -49,7 +49,14 @@ namespace PAS.BLL.ProjectPackage
             Percentage=percentage;
             Project=project;
         }
-
+        
+        public ProjectLuik(int luikid, string luiktitel, int percentage, int projectID):this(
+            luikid,
+            luiktitel,
+            percentage,
+            DomeinController.Instance.ProjectBeheerder.GetProjectenDictionary()[projectID])
+        {
+        }
         public ProjectLuik()
         {
         }

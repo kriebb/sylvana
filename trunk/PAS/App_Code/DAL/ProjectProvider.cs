@@ -67,27 +67,11 @@ namespace PAS.DAL
     
         /* Methodes voor de klasse ProjectLuik */
 
-        public abstract ProjectLuik GetProjectLuikByID(int projectluikid);
+        public abstract ProjectLuik GetProjectLuikByProjectluikID(int projectluikid);
 
         public abstract Dictionary<int,ProjectLuik> GetProjectLuiken();
     
-        /* Mappers voor de klasse ProjectLuik */
-
-        protected virtual ProjectLuik GetProjectLuikFromReader(IDataRecord oRecord)
-        {
-            return new ProjectLuik((int)oRecord["luikid"], oRecord["luiktitel"].ToString(), (int)oRecord["percentage"], new Project(int.Parse(oRecord["projectid"].ToString()))); 
-        }
-
-        protected virtual Dictionary<int,ProjectLuik> GetProjectLuikCollectionFromReader(IDataReader oReader)
-        {
-            Dictionary<int,ProjectLuik> projectluiken = new Dictionary<int,ProjectLuik>();
-            while (oReader.Read())
-            {
-                ProjectLuik pl = GetProjectLuikFromReader(oReader);
-                projectluiken.Add(pl.LuikId,pl);
-            }
-            return projectluiken;
-        }
+       
 
         /* Methodes voor de klasse ProjectOpgave */
 
@@ -130,6 +114,30 @@ namespace PAS.DAL
             }
             return projectOpgaven;
         }
+
+
+        /* Mappers voor de klasse ProjectLuik */
+        public abstract Dictionary<int, ProjectLuik> GetProjectLuikenByProjectID(int projectid);
+
+        
+
+        protected virtual ProjectLuik GetProjectLuikFromReader(IDataRecord oRecord)
+        {
+            return new ProjectLuik((int)oRecord["luikid"], oRecord["luiktitel"].ToString(), (int)oRecord["percentage"], int.Parse(oRecord["projectid"].ToString()));
+        }
+
+        protected virtual Dictionary<int, ProjectLuik> GetProjectLuikCollectionFromReader(IDataReader oReader)
+        {
+            Dictionary<int, ProjectLuik> projectluiken = new Dictionary<int, ProjectLuik>();
+            while (oReader.Read())
+            {
+                ProjectLuik pl = GetProjectLuikFromReader(oReader);
+                projectluiken.Add(pl.LuikId, pl);
+            }
+            return projectluiken;
+        }
+
+
 
 
     }

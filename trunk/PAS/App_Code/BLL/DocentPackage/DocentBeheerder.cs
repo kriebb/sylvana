@@ -15,20 +15,11 @@ namespace PAS.BLL.DocentPackage
         {
             
         }
-        public List<DocentInDocentTeam> SelecteerLuikenByProjectAndTeam(int projectid, int teamid)
-        {
-            List<DocentInDocentTeam> docentindocentteam_project_team = (List<DocentInDocentTeam>)HttpContext.Current.Cache["docentindocentteam_project_team=" + projectid + "" + teamid];
-            if (docentindocentteam_project_team == null)
-            {
-                docentindocentteam_project_team = DocentProvider.Instance.GetLuikenByProjectAndTeam(projectid, teamid);
-                HttpContext.Current.Cache["docentindocentteam_project_team=" + projectid + "" + teamid] = docentindocentteam_project_team;
-            }
-            return docentindocentteam_project_team;
-        }
+        
 
-        public List<DocentTeam> SelectDocentTeam(int opgaveid)
+        public Dictionary<int,DocentTeam> GetDocentTeam(int opgaveid)
         {
-            List<DocentTeam> docentteam_opgaveid = (List<DocentTeam>)HttpContext.Current.Cache["docentteam_opgaveid=" + opgaveid];
+            Dictionary<int,DocentTeam> docentteam_opgaveid = (Dictionary<int,DocentTeam>)HttpContext.Current.Cache["docentteam_opgaveid=" + opgaveid];
             if (docentteam_opgaveid == null)
             {
                 docentteam_opgaveid = DocentProvider.Instance.GetDocentTeamsByProjectOpgave(opgaveid);
@@ -36,46 +27,56 @@ namespace PAS.BLL.DocentPackage
             }
             return docentteam_opgaveid;
         }
+
+        public Dictionary<int, DocentTeam>.ValueCollection GetDocentTeam_ValueCollection(int opgaveid)
+        {
+            return this.GetDocentTeam(opgaveid).Values;
+        }
         public void MakeDocentTeam(DocentTeam dt)
         {
+            Helpers.PurgeCache("docentteam_opgaveid="+dt.ProjectOpgave.OpgaveId);
             DocentProvider.Instance.InsertDocentTeam(dt);
         }
-        public void DeleteDocentTeam(int teamid)
+        public void DeleteDocentTeam(DocentTeam dt)
         {
-            DocentProvider.Instance.DeleteDocentTeam(teamid);
+            Helpers.PurgeCache("docentteam_opgaveid=" + dt.ProjectOpgave.OpgaveId);
+            DocentProvider.Instance.DeleteDocentTeam(dt.DocentTeamId);
         }
 
         public bool ControleerLogin(string email, string paswoord)
         {
             return DocentProvider.Instance.controleerLogin(email, paswoord);
         }
-        public List<Docent> SelecteerDocenten()
+        public Dictionary<string,Docent> GetDocentenDictionary()
         {
-            List<Docent> docenten = (List<Docent>)HttpContext.Current.Cache["docenten"];
+            Dictionary<string,Docent> docenten = (Dictionary<string,Docent>)HttpContext.Current.Cache["getAllDocenten"];
             if (docenten == null)
             {
                 docenten = DocentProvider.Instance.GetDocenten();
-                Docent docent = new Docent();
-                docent.DocentId = "-1";
-                docent.Naam = "Niet ";
-                docent.Voornaam = "geselecteerd";
-                docenten.Insert(0, docent);
-                HttpContext.Current.Cache["docenten"] = docenten;
+                HttpContext.Current.Cache["getAllDocenten"] = docenten;
             }
             return docenten;
         }
-        public bool UpdateDocentTeam(DocentInDocentTeam docentinteam)
+        public void UpdateDocentInDocentTeam(DocentTeam docentinteam)
         {
-            return DocentProvider.Instance.UpdateDocentInDocentTeam(docentinteam);
+            //TODO:Cachen?
+            Dictionary<int, string>.Enumerator tst = docentinteam.DocentMetProjectLuikInDitDocentTeam.GetEnumerator();            
+            while (tst.MoveNext())
+            {
+                DocentProvider.Instance.UpdateDocentInDocentTeam(docentinteam.DocentTeamId,tst.Current.Key,tst.Current.Value);       
+            }
+            
         }
-        //public void SetDocentInTeam(Docent docent, int luikid, int teamid)
-        //{
-        //    throw new System.NotImplementedException();
-        //}
-
-        //public void UpdateDocentInTeam(Docent docent, int luikid, int teamid)
-        //{
-        //    throw new System.NotImplementedException();
-        //}
+        public Dictionary<int, string> GetAlleDocentenInEenDocentTeam_ByDocentTeamID(int docentTeamID)
+        {
+            Dictionary<int, string> alleDocentenVanEenTeam = (Dictionary<int, string>)HttpContext.Current.Cache["alleDocentenVanEenTeam_docentTeamID=" + docentTeamID];
+            if (alleDocentenVanEenTeam == null)
+            {
+                alleDocentenVanEenTeam = DocentProvider.Instance.GetDocentInDocentTeam_ByDocentTeamID(docentTeamID);
+                HttpContext.Current.Cache["alleDocentenVanEenTeam_docentTeamID=" + docentTeamID] = alleDocentenVanEenTeam;
+            }
+            return alleDocentenVanEenTeam;
+        }
+        //public List<DocentInDocentTeam> GetLuikenEnDocenten(
     }
 }

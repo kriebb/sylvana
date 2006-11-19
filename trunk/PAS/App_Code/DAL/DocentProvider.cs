@@ -33,9 +33,9 @@ namespace PAS.DAL
 
         /* Methodes voor de klasse Docent */
 
-        public abstract Docent GetDocentByID(int docentid);
+        public abstract Docent GetDocentByID(string docentid);
 
-        public abstract List<Docent> GetDocenten();
+        public abstract Dictionary<string,Docent> GetDocenten();
 
         public abstract bool controleerLogin(string email, string paswoord);
 
@@ -46,12 +46,13 @@ namespace PAS.DAL
             return new Docent(oRecord["docentid"].ToString(), oRecord["naam"].ToString(), oRecord["voornaam"].ToString(), oRecord["email"].ToString(), oRecord["paswoord"].ToString(), (bool)oRecord["admin"]);
         }
 
-        protected virtual List<Docent> GetDocentCollectionFromReader(IDataReader oReader)
+        protected virtual Dictionary<string,Docent> GetDocentCollectionFromReader(IDataReader oReader)
         {
-            List<Docent> docenten = new List<Docent>();
+            Dictionary<string,Docent> docenten = new Dictionary<string,Docent>();
             while (oReader.Read())
             {
-                docenten.Add(GetDocentFromReader(oReader));
+                Docent dc = GetDocentFromReader(oReader);
+                docenten.Add(dc.DocentId,dc);
             }
             return docenten;
         }
@@ -66,78 +67,55 @@ namespace PAS.DAL
 
         public abstract DocentTeam GetDocentTeamByID(int docentteamid);
 
-        public abstract List<DocentTeam> GetDocentTeamsByProjectOpgave(int projectopgaveid);
+        public abstract Dictionary<int,DocentTeam> GetDocentTeamsByProjectOpgave(int projectopgaveid);
 
-        public abstract List<DocentTeam> GetDocentTeams();
+        public abstract Dictionary<int,DocentTeam> GetDocentTeams();
 
         /* Mappers voor de klasse DocentTeam */
 
         protected virtual DocentTeam GetDocentTeamFromReader(IDataRecord oRecord)
         {
-            ProjectOpgave po = new ProjectOpgave();
-            po.OpgaveId=(int)oRecord["opgaveid"];
-            return new DocentTeam((int)oRecord["docentteamid"],po );
+            return new DocentTeam((int)oRecord["docentteamid"],(int)oRecord["opgaveid"],(int)oRecord["projectid"]);
         }
 
-        protected virtual List<DocentTeam> GetDocentTeamCollectionFromReader(IDataReader oReader)
+        protected virtual Dictionary<int,DocentTeam> GetDocentTeamCollectionFromReader(IDataReader oReader)
         {
-            List<DocentTeam> docentteams = new List<DocentTeam>();
+            Dictionary<int,DocentTeam> docentteams = new Dictionary<int,DocentTeam>();
             while (oReader.Read())
             {
-                docentteams.Add(GetDocentTeamFromReader(oReader));
+                DocentTeam dt = GetDocentTeamFromReader(oReader);
+                docentteams.Add(dt.DocentTeamId,dt);
             }
             return docentteams;
         }
 
         /* Methodes voor de klasse DocentInDocentTeam */
 
-        public abstract void InsertDocentInDocentTeam(DocentInDocentTeam docentinteam);
 
-        public abstract bool UpdateDocentInDocentTeam(DocentInDocentTeam docentinteam);
 
-        public abstract bool DeleteDocentInDocentTeam(int docentteamid);
+        public abstract bool UpdateDocentInDocentTeam(int docentteamid, int projectluikid, string docentid);
 
-        public abstract List<DocentInDocentTeam> GetDocentInDocentTeamByDocentTeam(int docentteamid);
+        
 
-        public abstract List<DocentInDocentTeam> GetDocentInDocentTeamsByDocent(int docentid);
-
-        public abstract List<string> GetDocentInDocentTeam(int luikid, int teamid);
-
-        protected virtual List<string> GetDocentInDocentTeamFromReader(IDataReader oReader)
-        {
-            List<string> lijst = new List<string>();
-            if (oReader.Read())
-            {
-                lijst.Add(oReader["docentid"].ToString());
-                lijst.Add(oReader["naam"].ToString() + " " + oReader["voornaam"].ToString());
-            }
-            return lijst;
-        }
-
-        public abstract List<DocentInDocentTeam> GetLuikenByProjectAndTeam(int projectid, int teamid);
+        public abstract Dictionary<int,string> GetDocentInDocentTeam_ByDocentTeamID(int docentteamid);
 
         /* Mappers voor de klasse DocentInDocentTeam */
 
-        protected virtual List<DocentInDocentTeam> GetLuikenFromReader(IDataReader oReader, int teamid)
+        protected virtual Dictionary<int,string> GetDocentInDocentTeamCollectionFromReader(IDataReader oReader)
         {
-            List<DocentInDocentTeam> lijst = new List<DocentInDocentTeam>();
+            Dictionary<int,string> docentInDocentTeam = new Dictionary<int, string>();
             while (oReader.Read())
             {
-                lijst.Add(GetLuikFromReader(oReader, teamid));
+                docentInDocentTeam.Add(
+                    (int)oReader["projectluikid"],
+                    ((oReader["docentID"]== DBNull.Value)?(null):oReader["docentID"].ToString()));
             }
-            return lijst;
+            return docentInDocentTeam;
         }
 
-        protected virtual DocentInDocentTeam GetLuikFromReader(IDataRecord oRecord, int teamid)
-        {
-            DocentTeam dt = new DocentTeam();
-            ProjectLuik pl = new ProjectLuik();
-            Docent d = new Docent();
-            dt.DocentTeamId=teamid;
-            pl.LuikId=(int)oRecord["luikid"];
-            d.DocentId=oRecord["docentid"].ToString();
-            return new DocentInDocentTeam(dt,pl,d );
-        }
+        
+        
+
 
     }
 }

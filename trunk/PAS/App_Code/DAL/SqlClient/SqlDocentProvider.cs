@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 using System.Data;
 using System.Data.SqlClient;
-
+using PAS.BLL.ProjectPackage;
 using PAS.BLL.DocentPackage;
 
 namespace PAS.DAL.SqlClient
@@ -15,12 +15,12 @@ namespace PAS.DAL.SqlClient
     {
         /* Methodes voor de klasse Docent */
 
-        public override Docent GetDocentByID(int docentid)
+        public override Docent GetDocentByID(string docentid)
         {
             throw new System.NotImplementedException();
         }
 
-        public override List<Docent> GetDocenten()
+        public override Dictionary<string,Docent> GetDocenten()
         {
             using (SqlConnection oConn = new SqlConnection(this.ConnectionString))
             {
@@ -79,19 +79,22 @@ namespace PAS.DAL.SqlClient
             throw new System.NotImplementedException();
         }
 
-        public override List<DocentTeam> GetDocentTeamsByProjectOpgave(int projectopgaveid)
+        public override Dictionary<int,DocentTeam> GetDocentTeamsByProjectOpgave(int projectopgaveid)
         {
             using (SqlConnection oConn = new SqlConnection(this.ConnectionString))
             {
                 SqlCommand oCmd = new SqlCommand("usp_Docentteam_By_Opgave", oConn);
                 oCmd.CommandType = CommandType.StoredProcedure;
-                if (projectopgaveid > 0) oCmd.Parameters.Add("@opgaveid", SqlDbType.Int).Value = projectopgaveid;
+                if (projectopgaveid > 0)
+                {
+                    oCmd.Parameters.Add("@opgaveid", SqlDbType.Int).Value = projectopgaveid;
+                }
                 oConn.Open();
                 return GetDocentTeamCollectionFromReader(ExecuteReader(oCmd));
             }
         }
 
-        public override List<DocentTeam> GetDocentTeams()
+        public override Dictionary<int,DocentTeam> GetDocentTeams()
         {
             using (SqlConnection oConn = new SqlConnection(this.ConnectionString))
             {
@@ -104,68 +107,46 @@ namespace PAS.DAL.SqlClient
 
         /* Methodes voor de klasse DocentInDocentTeam */
 
-        public override void InsertDocentInDocentTeam(DocentInDocentTeam docentinteam)
-        {
-            throw new System.NotImplementedException();
-        }
+        
 
-        public override bool UpdateDocentInDocentTeam(DocentInDocentTeam docentinteam)
+        public override bool UpdateDocentInDocentTeam(int docentteamid,int projectluikid, String docentid)
         {
             using (SqlConnection oConn = new SqlConnection(this.ConnectionString))
             {
                 SqlCommand oCmd = new SqlCommand("usp_DocentInDocentteam_Update", oConn);
                 oCmd.CommandType = CommandType.StoredProcedure;
-                oCmd.Parameters.Add("@docentteamid", SqlDbType.Int).Value = docentinteam.DocentTeam.DocentTeamId;
-                oCmd.Parameters.Add("@projectluikid", SqlDbType.Int).Value = docentinteam.ProjectLuik.LuikId;
-                oCmd.Parameters.Add("@docentid", SqlDbType.NVarChar).Value = docentinteam.Docent.DocentId;
-                oConn.Open();
-                ExecuteNonQuery(oCmd);
+                oCmd.Parameters.Add("@docentteamid", SqlDbType.Int).Value = docentteamid;
+                oCmd.Parameters.Add("@projectluikid", SqlDbType.Int).Value = projectluikid;
+                oCmd.Parameters.Add("@docentid", SqlDbType.NVarChar).Value = docentid;
+                oConn.Open();               
                 int ret = ExecuteNonQuery(oCmd);
-                return (ret == 1);
+                return (ret >= 1);
             }
-
         }
 
-        public override bool DeleteDocentInDocentTeam(int docentteamid)
-        {
-            throw new System.NotImplementedException();
-        }
+        
 
-        public override List<DocentInDocentTeam> GetDocentInDocentTeamByDocentTeam(int docentteamid)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override List<DocentInDocentTeam> GetLuikenByProjectAndTeam(int projectid, int teamid)
-        {
-        //    using (SqlConnection oConn = new SqlConnection(this.ConnectionString))
-        //    {
-        //        SqlCommand oCmd = new SqlCommand("usp_ProjectLuik_SelectAll", oConn);
-        //        oCmd.CommandType = CommandType.StoredProcedure;
-        //        oCmd.Parameters.Add("@projectid", SqlDbType.Int).Value = projectid;
-        //        oConn.Open();
-        //        return GetLuikenFromReader(ExecuteReader(oCmd), teamid);
-        //    }
-            return null;
-        }
-
-        public override List<DocentInDocentTeam> GetDocentInDocentTeamsByDocent(int docentid)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override List<string> GetDocentInDocentTeam(int luikid, int teamid)
+        public override Dictionary<int,string> GetDocentInDocentTeam_ByDocentTeamID(int docentteamid)
         {
             using (SqlConnection oConn = new SqlConnection(this.ConnectionString))
             {
-                SqlCommand oCmd = new SqlCommand("usp_DocentInTeam_SelectByLuikAndTeam", oConn);
+                SqlCommand oCmd = new SqlCommand("usp_DocentInDocentteam_Select_By_Docentteamid", oConn);
                 oCmd.CommandType = CommandType.StoredProcedure;
-                oCmd.Parameters.Add("@luikid", SqlDbType.Int).Value = luikid;
-                oCmd.Parameters.Add("@teamid", SqlDbType.Int).Value = teamid;
+                if (docentteamid > 0)
+                {
+                    oCmd.Parameters.Add("@docentteamid", SqlDbType.Int).Value = docentteamid;
+                }
                 oConn.Open();
-                return GetDocentInDocentTeamFromReader(ExecuteReader(oCmd));
+                return GetDocentInDocentTeamCollectionFromReader(ExecuteReader(oCmd));
             }
+
         }
+
+        
+
+        
+
+     
 
         public override bool controleerLogin(string email, string paswoord)
         {
