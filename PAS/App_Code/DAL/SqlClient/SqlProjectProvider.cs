@@ -42,7 +42,7 @@ namespace PAS.DAL.SqlClient
 
         /* Methodes voor de klasse ProjectLuik */
 
-        public override ProjectLuik GetProjectLuikByID(int projectluikid)
+        public override ProjectLuik GetProjectLuikByProjectluikID(int projectluikid)
         {
             using (SqlConnection oConn = new SqlConnection(this.ConnectionString))
             {
@@ -171,6 +171,18 @@ namespace PAS.DAL.SqlClient
                 }
                 oConn.Open();
                 return GetProjectOpgaveCollectionFromReader(ExecuteReader(oCmd));
+            }
+        }
+
+        public override Dictionary<int,ProjectLuik> GetProjectLuikenByProjectID(int projectid)
+        {
+            using (SqlConnection oConn = new SqlConnection(this.ConnectionString))
+            {
+                SqlCommand oCmd = new SqlCommand("usp_ProjectLuik_SelectAll", oConn);
+                oCmd.CommandType = CommandType.StoredProcedure;
+                oCmd.Parameters.Add("@projectid", SqlDbType.Int).Value = projectid;
+                oConn.Open();
+                return this.GetProjectLuikCollectionFromReader(ExecuteReader(oCmd));
             }
         }
     }

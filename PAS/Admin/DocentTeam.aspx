@@ -9,7 +9,7 @@
     <asp:DropDownList ID="ddlTeams" runat="server" DataSourceID="odsDocentTeams"
         DataTextField="DocentTeamId" DataValueField="DocentTeamId" OnSelectedIndexChanged="ddlTeams_SelectedIndexChanged">
     </asp:DropDownList><br />
-    <asp:ObjectDataSource ID="odsDocentTeams" runat="server" SelectMethod="SelectDocentTeam" TypeName="PAS.BLL.DocentPackage.DocentBeheerder">
+    <asp:ObjectDataSource ID="odsDocentTeams" runat="server" SelectMethod="GetDocentTeam_ValueCollection" TypeName="PAS.BLL.DocentPackage.DocentBeheerder">
         <SelectParameters>
             <asp:ControlParameter ControlID="ucOpgaveSelector" Name="opgaveid" PropertyName="SelectedOpgaveId"
                 Type="Int32" />
