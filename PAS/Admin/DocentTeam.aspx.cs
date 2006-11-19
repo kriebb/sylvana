@@ -91,6 +91,7 @@ public partial class Site_DocentTeam : System.Web.UI.Page
             grvProjectLuiken.Visible = true;
             btnUpdate.Visible = true;
             grvProjectLuiken.DataSourceID = "odsLuiken";
+            pnlTeams.Visible = true;
             grvProjectLuiken.DataBind();
         }
         else
