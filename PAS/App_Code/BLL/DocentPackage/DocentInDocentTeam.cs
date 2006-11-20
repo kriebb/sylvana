@@ -28,6 +28,10 @@ namespace PAS.BLL.DocentPackage
         {
             get { return pl.LuikTitel; }
         }
+        public int ProjectLuikID
+        {
+            get { return pl.LuikId; }
+        }
 
 
         private Docent docent;
@@ -41,6 +45,13 @@ namespace PAS.BLL.DocentPackage
         {
             get { return docent.NaamVoornaam; }
         }
+        
+
+        public string DocentID
+        {
+            get { return docent.DocentId; }
+        }
+	
 		
         
         public DocentInDocentTeam(ProjectLuik pl, Docent docent)

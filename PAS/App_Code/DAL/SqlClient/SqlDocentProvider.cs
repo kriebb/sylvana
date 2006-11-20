@@ -126,15 +126,16 @@ namespace PAS.DAL.SqlClient
 
         
         //fout hier
-        public override Dictionary<int,string> GetDocentInDocentTeam_ByDocentTeamID(int docentteamid)
+        public override Dictionary<int, string> GetDocentInDocentTeam_ByDocentTeamIDEnProjectID(int docentTeamID, int ProjectID, int OpgaveId)
         {
             using (SqlConnection oConn = new SqlConnection(this.ConnectionString))
             {
-                SqlCommand oCmd = new SqlCommand("usp_DocentInDocentteam_Select_By_Docentteamid", oConn);
+                SqlCommand oCmd = new SqlCommand("usp_DocentInDocentteam_Select_By_DocentteamidEnProjectid", oConn);
                 oCmd.CommandType = CommandType.StoredProcedure;
-                if (docentteamid > 0)
+                if (docentTeamID > 0)
                 {
-                    oCmd.Parameters.Add("@docentteamid", SqlDbType.Int).Value = docentteamid;
+                    oCmd.Parameters.Add("@docentteamid", SqlDbType.Int).Value = docentTeamID;
+                    oCmd.Parameters.Add("@projectid", SqlDbType.Int).Value = ProjectID;
                 }
                 oConn.Open();
                 return GetDocentInDocentTeamCollectionFromReader(ExecuteReader(oCmd));

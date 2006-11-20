@@ -97,7 +97,7 @@ namespace PAS.DAL
 
         
 
-        public abstract Dictionary<int,string> GetDocentInDocentTeam_ByDocentTeamID(int docentteamid);
+        public abstract Dictionary<int,string> GetDocentInDocentTeam_ByDocentTeamIDEnProjectID(int docentTeamID,int ProjectID,int OpgaveId);
 
         /* Mappers voor de klasse DocentInDocentTeam */
 
