@@ -49,7 +49,6 @@ public partial class Site_DocentTeam : System.Web.UI.Page
     }
     protected void btnNieuwTeam_Click(object sender, EventArgs e)
     {
-        /*
         DocentTeam dt = new DocentTeam();
         dt.DocentTeamId = ucOpgaveSelector.SelectedOpgaveId;
         DomeinController.Instance.DocentBeheerder.MakeDocentTeam(dt);
@@ -62,7 +61,6 @@ public partial class Site_DocentTeam : System.Web.UI.Page
         ddlTeams.SelectedIndex = ddlTeams.Items.Count-1;
         pnlTeams.Visible = true;
         grvProjectLuiken.Visible = true;
-         */
     }
     protected void btnVerwijderTeam_Click(object sender, EventArgs e)
     {
@@ -95,73 +93,68 @@ public partial class Site_DocentTeam : System.Web.UI.Page
             grvProjectLuiken.DataBind();
             List<DocentInDocentTeam> lijst = ((List<DocentInDocentTeam>)odsDocentInDocentTeam.Select());
             int teller = 0;
+            
             foreach (GridViewRow gr in grvProjectLuiken.Rows)
             {
-                
+                ((DropDownList)gr.FindControl("ddlDocenten")).Items.Insert(0, new ListItem("--Selecteer docent--", "-1"));
                 string docentid = lijst[teller].DocentID;
-                teller++;
-
-                ((DropDownList)gr.FindControl("ddlDocenten")).SelectedValue = docentid;
-                /*if (!(docentid.Equals("xxx")))
+                if(docentid.Equals("xxx"))
                 {
-                    
+                    ((DropDownList)gr.FindControl("ddlDocenten")).SelectedIndex=0;
                 }
                 else
                 {
-                    ((DropDownList)gr.FindControl("ddlDocenten")).SelectedValue = "xxx";
-                }*/
+                    ((DropDownList)gr.FindControl("ddlDocenten")).SelectedValue = docentid;
+                }
+                teller++;
             }
         }
         else
         {
-            //grvProjectLuiken.Visible = false;
+            grvProjectLuiken.Visible = false;
             btnUpdate.Visible = false;
-            //grvProjectLuiken.DataSourceID = null;
+            grvProjectLuiken.DataSourceID = null;
         }
     }
     protected void btnUpdate_Click(object sender, EventArgs e)
     {
-
-        //List<string> messages = new List<string>();
         int docentteamid = Int32.Parse(ddlTeams.SelectedValue);
         int opgaveid = ucOpgaveSelector.SelectedOpgaveId;
-        //int projectid=Int32.Parse(ucOpgaveSelector.SelectedProjectid);
 
 
 
-        foreach (GridViewRow gR in grvProjectLuiken.Rows)
+        foreach (GridViewRow gr in grvProjectLuiken.Rows)
         {
-            if ((DropDownList)gR.FindControl("ddlDocenten") != null)
+            if ((DropDownList)gr.FindControl("ddlDocenten") != null)
             {
-                string docentid = ((DropDownList)gR.FindControl("ddlDocenten")).SelectedValue.ToString();
-                int projectluikid = Int32.Parse(((Label)gR.FindControl("lblLuikID")).Text);
+                foreach (GridViewRow gr2 in grvProjectLuiken.Rows)
+                {
+                    int luikid = Int32.Parse(((Label)gr.FindControl("lblLuikID")).Text);
+                    int luikid2 = Int32.Parse(((Label)gr2.FindControl("lblLuikID")).Text);
+                    string docent = ((DropDownList)gr.FindControl("ddlDocenten")).SelectedValue.ToString();
+                    string docent2 = ((DropDownList)gr2.FindControl("ddlDocenten")).SelectedValue.ToString();
+                    if (docent == docent2  && luikid != luikid2)
+                    {
+                        lblMessage.Text = "Fout Updaten docent. Docent kan niet worden toegekend aan twee projectluiken.";
+                        break;
+                    }
+                    else
+                    {
+                        string docentid = ((DropDownList)gr.FindControl("ddlDocenten")).SelectedValue.ToString();
+                        int projectluikid = Int32.Parse(((Label)gr.FindControl("lblLuikID")).Text);
 
-                DocentTeam dt = DomeinController.Instance.DocentBeheerder.GetDocentTeam(opgaveid)[docentteamid];
-                Dictionary<int, string> docentMetLuik = new Dictionary<int, string>();
-                docentMetLuik.Add(projectluikid, docentid);
-                dt.DocentMetProjectLuikInDitDocentTeam = docentMetLuik;
+                        DocentTeam dt = DomeinController.Instance.DocentBeheerder.GetDocentTeam(opgaveid)[docentteamid];
+                        Dictionary<int, string> docentMetLuik = new Dictionary<int, string>();
+                        docentMetLuik.Add(projectluikid, docentid);
+                        dt.DocentMetProjectLuikInDitDocentTeam = docentMetLuik;
 
-                DomeinController.Instance.DocentBeheerder.UpdateDocentInDocentTeam(dt);
+                        DomeinController.Instance.DocentBeheerder.UpdateDocentInDocentTeam(dt);
+                    }
+                }
             }
+            lblMessage.Text = "Aanpassen geslaagd!";
+            lblMessage.Visible = true;
         }
-        //    string luik = ((Label)gR.FindControl("lblLuikTitel")).Text;
-        //    if (gelukt==false)
-        //    {
-        //        messages.Add("Updaten " + luik + " gelukt");
-        //    }
-        //    else
-        //    {
-        //        messages.Add("Updaten " + luik + " mislukt!");
-        //    }
-        //}
-        //foreach (string s in messages)
-        //{
-        //    lblMessage.Text = s;
-        //}
-        //lblMessage.Visible = true;
-    }
-    protected void ddlDocenten_SelectedIndexChanged(object sender, EventArgs e)
-    {
-
+        
     }
 }
