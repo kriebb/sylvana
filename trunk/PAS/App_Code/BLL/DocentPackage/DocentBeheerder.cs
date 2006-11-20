@@ -59,11 +59,7 @@ namespace PAS.BLL.DocentPackage
         }
         public Dictionary<string, Docent>.ValueCollection GetDocentenValues()
         {
-            Docent d = new Docent();
-            d.Naam="Geen Docent Toegewezen";
-            Dictionary<string, Docent> docenten = this.GetDocentenDictionary();
-            docenten.Add("xxx", d);
-            return docenten.Values;
+            return this.GetDocentenDictionary().Values;
         }
         public void UpdateDocentInDocentTeam(DocentTeam docentinteam)
         {

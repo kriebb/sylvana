@@ -54,7 +54,6 @@ namespace PAS.DAL.SqlClient
                 oCmd.Parameters.Add("@docentteamid", SqlDbType.Int).Value = docentteam.DocentTeamId;
                 oCmd.Parameters.Add("@opgaveid", SqlDbType.Int).Value = docentteam.ProjectOpgave;
                 oConn.Open();
-                ExecuteNonQuery(oCmd);
                 int ret = ExecuteNonQuery(oCmd);
                 return (ret == 1);
             }
@@ -68,7 +67,6 @@ namespace PAS.DAL.SqlClient
                 oCmd.CommandType = CommandType.StoredProcedure;
                 oCmd.Parameters.Add("@docentteamid", SqlDbType.Int).Value = docentteamid;
                 oConn.Open();
-                ExecuteNonQuery(oCmd);
                 int ret = ExecuteNonQuery(oCmd);
                 return (ret == 1);
             }
@@ -124,8 +122,6 @@ namespace PAS.DAL.SqlClient
             }
         }
 
-        
-        //fout hier
         public override Dictionary<int, string> GetDocentInDocentTeam_ByDocentTeamIDEnProjectID(int docentTeamID, int ProjectID, int OpgaveId)
         {
             using (SqlConnection oConn = new SqlConnection(this.ConnectionString))
@@ -142,12 +138,6 @@ namespace PAS.DAL.SqlClient
             }
 
         }
-
-        
-
-        
-
-     
 
         public override bool controleerLogin(string email, string paswoord)
         {

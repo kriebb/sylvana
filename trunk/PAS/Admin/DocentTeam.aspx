@@ -24,11 +24,11 @@
             <Columns>
                 <asp:TemplateField HeaderText="ProjectLuikNaam" SortExpression="ProjectLuikNaam">
                     <EditItemTemplate>
-                        <asp:Label ID="Label1" runat="server" Text='<%# Eval("ProjectLuikNaam") %>'></asp:Label>
-                        <asp:Label ID="lblLuikID" runat="server" Text='<%# bind("ProjectLuikID") %>' Visible="False"></asp:Label>
+                        &nbsp;
                     </EditItemTemplate>
                     <ItemTemplate>
                         <asp:Label ID="lblLuiknaam" runat="server" Text='<%# Bind("ProjectLuikNaam") %>'></asp:Label>
+                        <asp:Label ID="lblLuikID" runat="server" Text='<%# bind("ProjectLuikID") %>' Visible="False"></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="DocentNaam" SortExpression="DocentNaam">
@@ -36,7 +36,7 @@
                         &nbsp;&nbsp;&nbsp;
                     </EditItemTemplate>
                     <ItemTemplate>
-                        <asp:DropDownList ID="ddlDocenten" runat="server" DataSourceID="odsDocenten" DataTextField="NaamVoornaam" DataValueField="DocentID" OnSelectedIndexChanged="ddlDocenten_SelectedIndexChanged">
+                        <asp:DropDownList ID="ddlDocenten" runat="server" DataSourceID="odsDocenten" DataTextField="NaamVoornaam" DataValueField="DocentID" >
                         </asp:DropDownList><asp:ObjectDataSource ID="odsDocenten" runat="server" SelectMethod="GetDocentenValues"
                             TypeName="PAS.BLL.DocentPackage.DocentBeheerder"></asp:ObjectDataSource>
                     <asp:Label ID="Label2" runat="server" Text="Label" Visible="False"></asp:Label>
