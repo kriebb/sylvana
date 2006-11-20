@@ -19,9 +19,43 @@
     <asp:Button ID="btnNieuwTeam" runat="server" Text="Maak nieuw team" OnClick="btnNieuwTeam_Click" />&nbsp;
     <asp:Button ID="btnVerwijderTeam" runat="server" Text="Verwijder team" OnClick="btnVerwijderTeam_Click" /><br />
     <br />
-        &nbsp;
-        <asp:Button ID="btnUpdate" runat="server" Text="Update Team" OnClick="btnUpdate_Click" />
-        <br />
+        &nbsp;&nbsp;
+        <asp:GridView ID="grvProjectLuiken" runat="server" AutoGenerateColumns="False">
+            <Columns>
+                <asp:TemplateField HeaderText="ProjectLuikNaam" SortExpression="ProjectLuikNaam">
+                    <EditItemTemplate>
+                        <asp:Label ID="Label1" runat="server" Text='<%# Eval("ProjectLuikNaam") %>'></asp:Label>
+                        <asp:Label ID="lblLuikID" runat="server" Text='<%# bind("ProjectLuikID") %>' Visible="False"></asp:Label>
+                    </EditItemTemplate>
+                    <ItemTemplate>
+                        <asp:Label ID="lblLuiknaam" runat="server" Text='<%# Bind("ProjectLuikNaam") %>'></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="DocentNaam" SortExpression="DocentNaam">
+                    <EditItemTemplate>
+                        &nbsp;&nbsp;&nbsp;
+                    </EditItemTemplate>
+                    <ItemTemplate>
+                        <asp:DropDownList ID="ddlDocenten" runat="server" DataSourceID="odsDocenten" DataTextField="NaamVoornaam" DataValueField="DocentID" OnSelectedIndexChanged="ddlDocenten_SelectedIndexChanged">
+                        </asp:DropDownList><asp:ObjectDataSource ID="odsDocenten" runat="server" SelectMethod="GetDocentenValues"
+                            TypeName="PAS.BLL.DocentPackage.DocentBeheerder"></asp:ObjectDataSource>
+                    <asp:Label ID="Label2" runat="server" Text="Label" Visible="False"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
+            </Columns>
+        </asp:GridView>
+        <asp:ObjectDataSource ID="odsDocentInDocentTeam" runat="server" SelectMethod="GetLuikenEnDocenten"
+            TypeName="PAS.BLL.DocentPackage.DocentBeheerder">
+            <SelectParameters>
+                <asp:ControlParameter ControlID="ddlTeams" Name="docentTeamID" PropertyName="SelectedValue"
+                    Type="Int32" />
+                <asp:ControlParameter ControlID="ucOpgaveSelector" Name="projectID" PropertyName="SelectedProjectID"
+                    Type="Int32" />
+                <asp:ControlParameter ControlID="ucOpgaveSelector" Name="opgaveID" PropertyName="SelectedOpgaveID"
+                    Type="Int32" />
+            </SelectParameters>
+        </asp:ObjectDataSource>
+        <asp:Button ID="btnUpdate" runat="server" Text="Update Team" OnClick="btnUpdate_Click" /><br />
         <asp:Label ID="lblMessage" runat="server" Text="Label" Visible="false"></asp:Label></asp:Panel>
 </asp:Content>
 

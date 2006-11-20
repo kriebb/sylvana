@@ -49,17 +49,21 @@ namespace PAS.BLL.DocentPackage
         }
         public Dictionary<string,Docent> GetDocentenDictionary()
         {
-            Dictionary<string,Docent> docenten;// = (Dictionary<string,Docent>)HttpContext.Current.Cache["getAllDocenten"];
+            Dictionary<string,Docent> docenten;//= (Dictionary<string,Docent>)HttpContext.Current.Cache["getAllDocenten"];
             //if (docenten == null)
             {
                 docenten = DocentProvider.Instance.GetDocenten();
-               // HttpContext.Current.Cache["getAllDocenten"] = docenten;
+                //HttpContext.Current.Cache["getAllDocenten"] = docenten;
             }
             return docenten;
         }
         public Dictionary<string, Docent>.ValueCollection GetDocentenValues()
         {
-            return this.GetDocentenDictionary().Values;
+            Docent d = new Docent();
+            d.Naam="Geen Docent Toegewezen";
+            Dictionary<string, Docent> docenten = this.GetDocentenDictionary();
+            docenten.Add("xxx", d);
+            return docenten.Values;
         }
         public void UpdateDocentInDocentTeam(DocentTeam docentinteam)
         {
@@ -71,27 +75,43 @@ namespace PAS.BLL.DocentPackage
             }
             
         }
-        public Dictionary<int, string> GetAlleDocentenInEenDocentTeam_ByDocentTeamID(int docentTeamID)
+        public Dictionary<int, string> GetAlleDocentenInEenDocentTeam_ByDocentTeamID(int docentTeamID, int projectID, int opgaveID)
         {
             Dictionary<int, string> alleDocentenVanEenTeam;// = (Dictionary<int, string>)HttpContext.Current.Cache["alleDocentenVanEenTeam_docentTeamID=" + docentTeamID];
- //           if (alleDocentenVanEenTeam == null)
+            //if (alleDocentenVanEenTeam == null)
             {
-                alleDocentenVanEenTeam = DocentProvider.Instance.GetDocentInDocentTeam_ByDocentTeamID(docentTeamID);
+                alleDocentenVanEenTeam = DocentProvider.Instance.GetDocentInDocentTeam_ByDocentTeamIDEnProjectID(docentTeamID,projectID,opgaveID);
                 //HttpContext.Current.Cache["alleDocentenVanEenTeam_docentTeamID=" + docentTeamID] = alleDocentenVanEenTeam;
             }
             return alleDocentenVanEenTeam;
         }
 
 
-        public List<DocentInDocentTeam> GetLuikenEnDocenten(int docentTeamID,int projectid)
+        public List<DocentInDocentTeam> GetLuikenEnDocenten(int docentTeamID,int projectID,int opgaveID)
         {
-            Dictionary<int, string>.Enumerator advet = this.GetAlleDocentenInEenDocentTeam_ByDocentTeamID(docentTeamID).GetEnumerator();
+            Dictionary<int, string>.Enumerator advet = this.GetAlleDocentenInEenDocentTeam_ByDocentTeamID(docentTeamID,projectID,opgaveID).GetEnumerator();
             List<DocentInDocentTeam> lijst = new List<DocentInDocentTeam>();
 
             while (advet.MoveNext())
             {
-               lijst.Add(new DocentInDocentTeam(DomeinController.Instance.ProjectBeheerder.GetProjectLuikByProjectID(projectid)[advet.Current.Key],
-                   this.GetDocentenDictionary()[advet.Current.Value]));
+                if (advet.Current.Key != null)
+
+                    
+                {
+                    if (advet.Current.Value == null)
+                    {
+                        Docent d = new Docent();
+                        d.DocentId="xxx";
+                        d.Naam = "Geen Docent Toegewezen";
+                        lijst.Add(new DocentInDocentTeam(DomeinController.Instance.ProjectBeheerder.GetProjectLuikByProjectID(projectID)[advet.Current.Key],d));
+
+                    }
+                    else
+                    {
+                        lijst.Add(new DocentInDocentTeam(DomeinController.Instance.ProjectBeheerder.GetProjectLuikByProjectID(projectID)[advet.Current.Key],
+                        this.GetDocentenDictionary()[advet.Current.Value]));
+                    }
+                }
             }
             return lijst;
         }

@@ -17,7 +17,7 @@ namespace PAS.BLL.DocentPackage
         {
             DocentTeamId = docentteamid;
             ProjectOpgave = po;
-            DocentMetProjectLuikInDitDocentTeam = DomeinController.Instance.DocentBeheerder.GetAlleDocentenInEenDocentTeam_ByDocentTeamID(docentteamid);
+            DocentMetProjectLuikInDitDocentTeam = DomeinController.Instance.DocentBeheerder.GetAlleDocentenInEenDocentTeam_ByDocentTeamID(_docentTeamId,po.ProjectID,po.OpgaveId);
         }
 
         public DocentTeam(int docentTeamID,int projectOpgaveID,int projectID):
